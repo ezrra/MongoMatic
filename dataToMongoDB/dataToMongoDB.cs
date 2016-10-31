@@ -81,10 +81,10 @@ namespace dataToMongoDB
                     //Escribir los records en mongo
                     while (sourceData.Read())
                     {
-                        Dictionary<string, string> values = new Dictionary<string, string>();
+                        Dictionary<string, dynamic> values = new Dictionary<string, dynamic>();
                         for (int i = 0; i < sourceData.FieldCount; i++)
                         {
-                            values.Add(sourceData.GetName(i), sourceData.GetValue(i).ToString());
+                            values.Add(sourceData.GetName(i), sourceData.GetValue(i));
                         }
 
                         lista.Add(new BsonDocument(values));
