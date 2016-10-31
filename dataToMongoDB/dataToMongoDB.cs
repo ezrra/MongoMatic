@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Common;
 using MongoDB.Driver;
 using MongoDB.Bson;
 
 
 namespace dataToMongoDB
 {
+
+    public enum connectionType  {sqlServer, mySQL };
     public struct dataObject
     {
+        public connectionType connType { get; set; }
         public bool dropTable { get; set; }
 
         public string connectionString { get; set; }
@@ -19,18 +23,19 @@ namespace dataToMongoDB
         public string database { get; set; }
         public string table { get; set; }
         public string key { get; set; }
+        public string script { get; set; }
+
     }
 
-  
-
-    public class dataToMongoDBProcess
+   
+    public abstract class dataToMongoDBProcess
     {
-        private long minValue;
-        private long maxValue;
+        protected long minValue;
+        protected long maxValue;
 
-        private dataObject source { get; set; }
-        private dataObject destination { get; set; }
-        private SqlDataReader sourceData { get; set; }
+        protected dataObject source { get; set; }
+        protected dataObject destination { get; set; }
+        protected DbDataReader sourceData { get; set; }
 
         public string export(dataObject source, dataObject destination)
         {
@@ -41,7 +46,7 @@ namespace dataToMongoDB
             return time2.ToString();
         }
 
-        private IMongoCollection<BsonDocument> setupDestination(dataObject _destination)
+        protected IMongoCollection<BsonDocument> setupDestination(dataObject _destination)
         {
             destination = _destination;
             
@@ -52,46 +57,10 @@ namespace dataToMongoDB
             return db.GetCollection<BsonDocument>( destination.table );
         }
 
-        private void setupSource(dataObject _source)
-        {
-            source = _source;
-            using (SqlConnection connection = new SqlConnection(source.connectionString))
-            {
-                SqlCommand command = new SqlCommand();
-                command.Connection = connection;
-                connection.Open();
-                setMInMaxValues();
-            }
-        }
-        private void setMInMaxValues()
-        {
-            using (SqlConnection connection = new SqlConnection( source.connectionString))
-            {
-                SqlCommand command = new SqlCommand();
-                command.Connection = connection;
-                connection.Open();
+        protected abstract void setupSource(dataObject _source);
 
-                command.CommandText = string.Format("select count(*) count, min({1}) minValue, max({1}) maxValue from {0} ",
-                                                    source.table, source.key);
-
-                SqlDataReader reader = command.ExecuteReader();
-                reader.Read();
-                minValue = Convert.ToInt64(reader.GetValue(1));
-                maxValue = Convert.ToInt64(reader.GetValue(2));
-            }
-        }
-        private void getSourceData( Int64 lowBound, Int64 highBound)
-        {
-            SqlConnection connection = new SqlConnection(source.connectionString);
-                SqlCommand command = new SqlCommand();
-                command.Connection = connection;
-                command.CommandText =string.Format("select top 10 * from {0} where {1} between {2} and {3} ", source.table, source.key, lowBound, highBound);
-                connection.Open();
-                sourceData  =command.ExecuteReader();
-
-               // return sourceData;
-            
-        }
+        protected abstract void setMInMaxValues();
+        protected abstract void getSourceData(Int64 lowBound, Int64 highBound);
 
         private void exportFromSourceToDestination(dataObject _source, dataObject _destination)
         {
