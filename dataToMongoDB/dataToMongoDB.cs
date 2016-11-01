@@ -69,6 +69,9 @@ namespace dataToMongoDB
             var destinationData = setupDestination(_destination);
 
             List<BsonDocument> lista = new List<BsonDocument>();
+
+            List<String> listaGrupos = grupos();
+
             int j = 0;
             Int64 x = minValue;
 
@@ -84,7 +87,21 @@ namespace dataToMongoDB
                         Dictionary<string, dynamic> values = new Dictionary<string, dynamic>();
                         for (int i = 0; i < sourceData.FieldCount; i++)
                         {
-                            values.Add(sourceData.GetName(i), sourceData.GetValue(i));
+                            if (listaGrupos.Contains(sourceData.GetName(i))) {
+
+                                var valor = valorDelGrupo(sourceData.GetName(i), "PREMIUM");
+
+                                values.Add(sourceData.GetName(i), valor);
+
+                                // Console.WriteLine("Si hay grupo: " + sourceData.GetName(i));
+                            } else
+                            {
+
+                                values.Add(sourceData.GetName(i), sourceData.GetValue(i));
+                            }
+                            
+
+                            
                         }
 
                         lista.Add(new BsonDocument(values));
@@ -113,6 +130,38 @@ namespace dataToMongoDB
                 x = x + 1 + source.interval;
             }
 
+        }
+
+        public List<string> grupos ()
+        {
+            var list = new List<String>();
+
+            list.Add("grupo02");
+
+            return list;
+        }
+
+        public string valorDelGrupo(string grupo, string valor) {
+
+            var builder = Builders<BsonDocument>.Filter;
+
+            var filters = builder.Eq("grupo", grupo) & builder.Eq("valorOriginal", valor);
+
+            var mongoClient = new MongoClient(this.destination.connectionString);
+
+            var db = mongoClient.GetDatabase(this.destination.database);
+
+            // if (destination.dropTable)
+            //     db.DropCollection(destination.table);
+            // return db.GetCollection<BsonDocument>(destination.table);
+
+            var collection = db.GetCollection<BsonDocument>("trans");
+
+            var document = collection.Find(filters).First();
+
+            // Console.WriteLine(document["valorReemplazo"]);
+
+            return document["valorReemplazo"].ToString(); // document.ToString();
         }
 
 
