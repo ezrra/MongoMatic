@@ -29,11 +29,17 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.textBoxSQLScript = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.radioButtonMySQL = new System.Windows.Forms.RadioButton();
             this.radioButtonSqlServer = new System.Windows.Forms.RadioButton();
             this.label7 = new System.Windows.Forms.Label();
             this.textBoxSQLDatabase = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.textBoxSQLKey = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.textBoxSQLTable = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxSQLConnection = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -52,12 +58,11 @@
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.textBoxSQLTable = new System.Windows.Forms.TextBox();
-            this.textBoxSQLKey = new System.Windows.Forms.TextBox();
-            this.textBoxSQLScript = new System.Windows.Forms.TextBox();
-            this.label12 = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
+            this.listaArchivos = new System.Windows.Forms.ListBox();
+            this.button3 = new System.Windows.Forms.Button();
+            this.label13 = new System.Windows.Forms.Label();
+            this.button4 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -78,13 +83,31 @@
             this.groupBox1.Controls.Add(this.textBoxSQLConnection);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.textBox1);
-            this.groupBox1.Location = new System.Drawing.Point(12, 12);
+            this.groupBox1.Location = new System.Drawing.Point(463, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(680, 319);
             this.groupBox1.TabIndex = 18;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Parámetros de SQL";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(18, 217);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(34, 13);
+            this.label12.TabIndex = 33;
+            this.label12.Text = "Script";
+            // 
+            // textBoxSQLScript
+            // 
+            this.textBoxSQLScript.Location = new System.Drawing.Point(21, 233);
+            this.textBoxSQLScript.Multiline = true;
+            this.textBoxSQLScript.Name = "textBoxSQLScript";
+            this.textBoxSQLScript.Size = new System.Drawing.Size(653, 80);
+            this.textBoxSQLScript.TabIndex = 32;
+            this.textBoxSQLScript.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             // 
             // groupBox3
             // 
@@ -138,6 +161,40 @@
             this.textBoxSQLDatabase.TabIndex = 27;
             this.textBoxSQLDatabase.Text = "transacciones";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(156, 186);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(33, 13);
+            this.label6.TabIndex = 26;
+            this.label6.Text = "Llave";
+            // 
+            // textBoxSQLKey
+            // 
+            this.textBoxSQLKey.Location = new System.Drawing.Point(196, 183);
+            this.textBoxSQLKey.Name = "textBoxSQLKey";
+            this.textBoxSQLKey.Size = new System.Drawing.Size(100, 20);
+            this.textBoxSQLKey.TabIndex = 25;
+            this.textBoxSQLKey.Text = "id_transaccion";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(156, 160);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(34, 13);
+            this.label5.TabIndex = 24;
+            this.label5.Text = "Tabla";
+            // 
+            // textBoxSQLTable
+            // 
+            this.textBoxSQLTable.Location = new System.Drawing.Point(196, 157);
+            this.textBoxSQLTable.Name = "textBoxSQLTable";
+            this.textBoxSQLTable.Size = new System.Drawing.Size(100, 20);
+            this.textBoxSQLTable.TabIndex = 23;
+            this.textBoxSQLTable.Text = "id_transaccion";
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -186,7 +243,7 @@
             this.groupBox2.Controls.Add(this.textBoxMongoConnection);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.textBox4);
-            this.groupBox2.Location = new System.Drawing.Point(12, 356);
+            this.groupBox2.Location = new System.Drawing.Point(463, 356);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(680, 191);
             this.groupBox2.TabIndex = 22;
@@ -197,8 +254,6 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Checked = true;
-            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox1.Location = new System.Drawing.Point(21, 168);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(80, 17);
@@ -294,7 +349,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(617, 553);
+            this.button1.Location = new System.Drawing.Point(1077, 562);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 23;
@@ -307,75 +362,81 @@
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("MS Reference Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label11.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.label11.Location = new System.Drawing.Point(25, 559);
+            this.label11.Location = new System.Drawing.Point(459, 572);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(68, 20);
             this.label11.TabIndex = 24;
             this.label11.Text = "sdfsdfs";
             // 
-            // label6
+            // button2
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(156, 186);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(33, 13);
-            this.label6.TabIndex = 26;
-            this.label6.Text = "Llave";
+            this.button2.Location = new System.Drawing.Point(984, 562);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 25;
+            this.button2.Text = "transform";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // label5
+            // listaArchivos
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(156, 160);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(34, 13);
-            this.label5.TabIndex = 24;
-            this.label5.Text = "Tabla";
+            this.listaArchivos.FormattingEnabled = true;
+            this.listaArchivos.Location = new System.Drawing.Point(13, 12);
+            this.listaArchivos.Name = "listaArchivos";
+            this.listaArchivos.Size = new System.Drawing.Size(423, 524);
+            this.listaArchivos.TabIndex = 26;
+            this.listaArchivos.SelectedIndexChanged += new System.EventHandler(this.button3_Click);
             // 
-            // textBoxSQLTable
+            // button3
             // 
-            this.textBoxSQLTable.Location = new System.Drawing.Point(196, 157);
-            this.textBoxSQLTable.Name = "textBoxSQLTable";
-            this.textBoxSQLTable.Size = new System.Drawing.Size(100, 20);
-            this.textBoxSQLTable.TabIndex = 23;
-            this.textBoxSQLTable.Text = "id_transaccion";
+            this.button3.Location = new System.Drawing.Point(13, 562);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 27;
+            this.button3.Text = "Cargar";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // textBoxSQLKey
+            // label13
             // 
-            this.textBoxSQLKey.Location = new System.Drawing.Point(196, 183);
-            this.textBoxSQLKey.Name = "textBoxSQLKey";
-            this.textBoxSQLKey.Size = new System.Drawing.Size(100, 20);
-            this.textBoxSQLKey.TabIndex = 25;
-            this.textBoxSQLKey.Text = "id_transaccion";
+            this.label13.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("MS Reference Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.ForeColor = System.Drawing.Color.Maroon;
+            this.label13.Location = new System.Drawing.Point(368, 572);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(68, 20);
+            this.label13.TabIndex = 28;
+            this.label13.Text = "sdfsdfs";
+            this.label13.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // textBoxSQLScript
+            // button4
             // 
-            this.textBoxSQLScript.Location = new System.Drawing.Point(21, 233);
-            this.textBoxSQLScript.Multiline = true;
-            this.textBoxSQLScript.Name = "textBoxSQLScript";
-            this.textBoxSQLScript.Size = new System.Drawing.Size(653, 80);
-            this.textBoxSQLScript.TabIndex = 32;
-            this.textBoxSQLScript.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(18, 217);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(34, 13);
-            this.label12.TabIndex = 33;
-            this.label12.Text = "Script";
+            this.button4.Location = new System.Drawing.Point(105, 562);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 29;
+            this.button4.Text = "Grabar";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(704, 588);
+            this.ClientSize = new System.Drawing.Size(1167, 601);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.listaArchivos);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -419,6 +480,11 @@
         private System.Windows.Forms.TextBox textBoxSQLKey;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBoxSQLTable;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.ListBox listaArchivos;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Button button4;
     }
 }
 

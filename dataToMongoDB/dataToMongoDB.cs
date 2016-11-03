@@ -12,7 +12,7 @@ using MongoDB.Bson;
 namespace dataToMongoDB
 {
 
-    public enum connectionType  {sqlServer, mySQL };
+    public enum connectionType { sqlServer, mySQL };
     public struct dataObject
     {
         public connectionType connType { get; set; }
@@ -22,12 +22,13 @@ namespace dataToMongoDB
         public Int64 interval { get; set; }
         public string database { get; set; }
         public string table { get; set; }
+        public string transformationTable { get; set; }
         public string key { get; set; }
         public string script { get; set; }
 
     }
 
-   
+
     public abstract class dataToMongoDBProcess
     {
         protected long minValue;
@@ -40,7 +41,7 @@ namespace dataToMongoDB
         public string export(dataObject source, dataObject destination)
         {
             DateTime time = DateTime.Now;
-            exportFromSourceToDestination( source, destination );
+            exportFromSourceToDestination(source, destination);
             TimeSpan time2 = DateTime.Now - time;
 
             return time2.ToString();
@@ -49,12 +50,12 @@ namespace dataToMongoDB
         protected IMongoCollection<BsonDocument> setupDestination(dataObject _destination)
         {
             destination = _destination;
-            
-            var mongoClient = new MongoClient( destination.connectionString );
-            var db = mongoClient.GetDatabase( destination.database );
-            if (destination.dropTable )
+
+            var mongoClient = new MongoClient(destination.connectionString);
+            var db = mongoClient.GetDatabase(destination.database);
+            if (destination.dropTable)
                 db.DropCollection(destination.table);
-            return db.GetCollection<BsonDocument>( destination.table );
+            return db.GetCollection<BsonDocument>(destination.table);
         }
 
         protected abstract void setupSource(dataObject _source);
@@ -64,21 +65,20 @@ namespace dataToMongoDB
 
         private void exportFromSourceToDestination(dataObject _source, dataObject _destination)
         {
-            
-            setupSource(_source );
+            transformation trans = new transformation(_destination);
+
+            setupSource(_source);
             var destinationData = setupDestination(_destination);
 
             List<BsonDocument> lista = new List<BsonDocument>();
-
-            List<String> listaGrupos = grupos();
 
             int j = 0;
             Int64 x = minValue;
 
             while (x <= maxValue)
             {
-                getSourceData( x, x + source.interval);
-                
+                getSourceData(x, x + source.interval);
+
                 try
                 {
                     //Escribir los records en mongo
@@ -87,21 +87,11 @@ namespace dataToMongoDB
                         Dictionary<string, dynamic> values = new Dictionary<string, dynamic>();
                         for (int i = 0; i < sourceData.FieldCount; i++)
                         {
-                            if (listaGrupos.Contains(sourceData.GetName(i))) {
-
-                                var valor = valorDelGrupo(sourceData.GetName(i), "PREMIUM");
-
-                                values.Add(sourceData.GetName(i), valor);
-
-                                // Console.WriteLine("Si hay grupo: " + sourceData.GetName(i));
-                            } else
-                            {
-
+                            if (sourceData.GetName(i).Contains("grupo"))
+                                values.Add(sourceData.GetName(i), trans.filter(sourceData.GetName(i), sourceData.GetValue(i).ToString()));
+                            else
                                 values.Add(sourceData.GetName(i), sourceData.GetValue(i));
-                            }
-                            
 
-                            
                         }
 
                         lista.Add(new BsonDocument(values));
@@ -132,41 +122,10 @@ namespace dataToMongoDB
 
         }
 
-        public List<string> grupos ()
-        {
-            var list = new List<String>();
-
-            list.Add("grupo02");
-
-            return list;
-        }
-
-        public string valorDelGrupo(string grupo, string valor) {
-
-            var builder = Builders<BsonDocument>.Filter;
-
-            var filters = builder.Eq("grupo", grupo) & builder.Eq("valorOriginal", valor);
-
-            var mongoClient = new MongoClient(this.destination.connectionString);
-
-            var db = mongoClient.GetDatabase(this.destination.database);
-
-            // if (destination.dropTable)
-            //     db.DropCollection(destination.table);
-            // return db.GetCollection<BsonDocument>(destination.table);
-
-            var collection = db.GetCollection<BsonDocument>("trans");
-
-            var document = collection.Find(filters).First();
-
-            // Console.WriteLine(document["valorReemplazo"]);
-
-            return document["valorReemplazo"].ToString(); // document.ToString();
-        }
 
 
     }
 
-     
-    
+
+
 }

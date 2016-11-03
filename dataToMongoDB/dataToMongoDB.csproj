@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="appSettings.cs" />
+    <Compile Include="transformation.cs" />
     <Compile Include="dataToMongoDBProcessSQLServer.cs" />
     <Compile Include="dataToMongoDBProcessMySQL.cs" />
     <Compile Include="dataToMongoDB.cs" />

@@ -79,14 +79,27 @@ namespace dataToMongoDB
             { return ConfigurationManager.AppSettings["mongoDBServerTable"];
             }
         }
+
+        public string mongoDBServerTransformationTable
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["mongoDBServerTranformationTable"];
+            }
+        }
         public string mongoDBServerKey
         {
             get
             { return ConfigurationManager.AppSettings[" mongoDBServerKey"]; }
         }
 
+        public string folderPath
+        {
+            get
+            { return ConfigurationManager.AppSettings["folderPath"]; }
+        }
 
 
-    
+
     }
 }
