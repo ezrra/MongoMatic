@@ -28,10 +28,10 @@ namespace dataToMongoDB
             InitializeComponent();
             Initialize();
             radioButtonSqlServer.Checked = true;
-            textBoxMongoConnection.Text = appSettings.mongoDBServerConnection;
+            /* textBoxMongoConnection.Text = appSettings.mongoDBServerConnection;
             textBoxMongoDatabase.Text = appSettings.mongoDBServerDatabase;
             textBoxMongoTable.Text = appSettings.mongoDBServerTable;
-            textBoxMongoKey.Text = appSettings.mongoDBServerKey;
+            textBoxMongoKey.Text = appSettings.mongoDBServerKey; */
             label11.Text = "";
             label13.Text = "";
             label14.Text = "";
@@ -40,10 +40,15 @@ namespace dataToMongoDB
         private void Initialize()
         {
             string[] fileEntries = Directory.GetFiles(appSettings.folderPath);
+            /* foreach (string fileName in fileEntries)
+                listaArchivos.Items.Add(fileName); */
+
             foreach (string fileName in fileEntries)
-                listaArchivos.Items.Add(fileName);
+                checkListaArchivos.Items.Add(fileName);
 
             nameValueColl = new NameValueCollection();
+
+            
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
@@ -60,6 +65,12 @@ namespace dataToMongoDB
         {
             label11.Text = "Procesando...";
             dataToMongoDBProcess process;
+
+            foreach (object itemChecked in checkListaArchivos.CheckedItems)
+            {
+
+                MessageBox.Show(itemChecked.ToString());
+            }
 
             
             if ( _connectionType  == connectionType.sqlServer)
@@ -83,8 +94,8 @@ namespace dataToMongoDB
             destination.key = textBoxMongoKey.Text;
             destination.interval = Convert.ToInt64(textBox4.Text);
             destination.dropTable = checkBox1.Checked;
-            destination.transformationTable = appSettings.mongoDBServerTransformationTable;
-
+            // destination.transformationTable = appSettings.mongoDBServerTransformationTable;
+            destination.transformationTable = nameValueColl["mongoDBServerTranformationTable"];
             label11.Text = "Tiempo de procesamiento: " + process.export(source, destination);
 
         }
@@ -124,8 +135,8 @@ namespace dataToMongoDB
             destination.key = textBoxMongoKey.Text;
             destination.interval = Convert.ToInt64(textBox4.Text);
             destination.dropTable = checkBox1.Checked;
-            destination.transformationTable = appSettings.mongoDBServerTransformationTable;
-
+            // destination.transformationTable = appSettings.mongoDBServerTransformationTable;
+            destination.transformationTable = nameValueColl["mongoDBServerTranformationTable"];
             transformation grupo01 = new transformation(destination);
             
         }
@@ -137,11 +148,12 @@ namespace dataToMongoDB
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if (listaArchivos.SelectedIndex != -1)
+            if (checkListaArchivos.SelectedIndex != -1)
             {
-                fileName = listaArchivos.SelectedItem.ToString();
+                fileName = checkListaArchivos.SelectedItem.ToString();
                 xDoc = new System.Xml.XmlDocument();
-                NameValueCollection nameValueColl = new NameValueCollection();
+                // NameValueCollection 
+                nameValueColl = new NameValueCollection();
                 // ExeConfigurationFileMap map = new ExeConfigurationFileMap();
                 // map.ExeConfigFilename = fileName;
 
@@ -188,7 +200,7 @@ namespace dataToMongoDB
 
         private void button4_Click(object sender, EventArgs e)
         {
-            if (listaArchivos.SelectedIndex != -1)
+            if (checkListaArchivos.SelectedIndex != -1)
             {
                 try
                 {

@@ -59,11 +59,11 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
-            this.listaArchivos = new System.Windows.Forms.ListBox();
             this.button3 = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
             this.label14 = new System.Windows.Forms.Label();
+            this.checkListaArchivos = new System.Windows.Forms.CheckedListBox();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -375,18 +375,9 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 25;
-            this.button2.Text = "transform";
+            this.button2.Text = "Transformar";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // listaArchivos
-            // 
-            this.listaArchivos.FormattingEnabled = true;
-            this.listaArchivos.Location = new System.Drawing.Point(13, 12);
-            this.listaArchivos.Name = "listaArchivos";
-            this.listaArchivos.Size = new System.Drawing.Size(423, 524);
-            this.listaArchivos.TabIndex = 26;
-            this.listaArchivos.SelectedIndexChanged += new System.EventHandler(this.button3_Click);
             // 
             // button3
             // 
@@ -435,16 +426,25 @@
             this.label14.Text = "sdfsdfs";
             this.label14.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
+            // checkListaArchivos
+            // 
+            this.checkListaArchivos.FormattingEnabled = true;
+            this.checkListaArchivos.Location = new System.Drawing.Point(12, 18);
+            this.checkListaArchivos.Name = "checkListaArchivos";
+            this.checkListaArchivos.Size = new System.Drawing.Size(423, 529);
+            this.checkListaArchivos.TabIndex = 31;
+            this.checkListaArchivos.SelectedIndexChanged += new System.EventHandler(this.button3_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1167, 601);
+            this.Controls.Add(this.checkListaArchivos);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.button3);
-            this.Controls.Add(this.listaArchivos);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.button1);
@@ -497,11 +497,11 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBoxSQLTable;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.ListBox listaArchivos;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.CheckedListBox checkListaArchivos;
     }
 }
 

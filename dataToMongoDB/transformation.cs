@@ -23,8 +23,6 @@ namespace dataToMongoDB
         {
             lista = new List<grupoT>();
             setupMongo(_destination);
-            
-
         }
 
         public string filter(string grupo, string find)
