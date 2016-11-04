@@ -89,6 +89,8 @@ namespace dataToMongoDB
                         {
                             if (sourceData.GetName(i).Contains("grupo"))
                                 values.Add(sourceData.GetName(i), trans.filter(sourceData.GetName(i), sourceData.GetValue(i).ToString()));
+                            else if (sourceData.GetName(i).Equals("venta") || sourceData.GetName(i).Equals("litros") || sourceData.GetName(i).Equals("precioPorLitro") )
+                                values.Add(sourceData.GetName(i), Convert.ToDouble(sourceData.GetValue(i)));
                             else
                                 values.Add(sourceData.GetName(i), sourceData.GetValue(i));
 

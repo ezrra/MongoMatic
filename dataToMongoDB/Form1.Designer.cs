@@ -45,6 +45,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.textBoxTranformationTable = new System.Windows.Forms.TextBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
             this.textBoxMongoDatabase = new System.Windows.Forms.TextBox();
@@ -105,6 +107,7 @@
             this.textBoxSQLScript.Location = new System.Drawing.Point(21, 233);
             this.textBoxSQLScript.Multiline = true;
             this.textBoxSQLScript.Name = "textBoxSQLScript";
+            this.textBoxSQLScript.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.textBoxSQLScript.Size = new System.Drawing.Size(653, 80);
             this.textBoxSQLScript.TabIndex = 32;
             this.textBoxSQLScript.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
@@ -232,6 +235,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label14);
+            this.groupBox2.Controls.Add(this.textBoxTranformationTable);
             this.groupBox2.Controls.Add(this.checkBox1);
             this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.Controls.Add(this.textBoxMongoDatabase);
@@ -250,6 +255,22 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Parámetros de MongoDB";
             this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(332, 118);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(110, 13);
+            this.label14.TabIndex = 37;
+            this.label14.Text = "Tabla Transformacion";
+            // 
+            // textBoxTranformationTable
+            // 
+            this.textBoxTranformationTable.Location = new System.Drawing.Point(448, 115);
+            this.textBoxTranformationTable.Name = "textBoxTranformationTable";
+            this.textBoxTranformationTable.Size = new System.Drawing.Size(100, 20);
+            this.textBoxTranformationTable.TabIndex = 36;
             // 
             // checkBox1
             // 
@@ -485,6 +506,8 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox textBoxTranformationTable;
     }
 }
 

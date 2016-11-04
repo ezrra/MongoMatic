@@ -78,9 +78,9 @@ namespace dataToMongoDB
             destination.key = textBoxMongoKey.Text;
             destination.interval = Convert.ToInt64(textBox4.Text);
             destination.dropTable = checkBox1.Checked;
-            destination.transformationTable = appSettings.mongoDBServerTransformationTable;
+            destination.transformationTable = textBoxTranformationTable.Text;
 
-            
+
 
             label11.Text = "Tiempo de procesamiento: " + process.export(source, destination);
 
@@ -123,7 +123,7 @@ namespace dataToMongoDB
             destination.key = textBoxMongoKey.Text;
             destination.interval = Convert.ToInt64(textBox4.Text);
             destination.dropTable = checkBox1.Checked;
-            destination.transformationTable = appSettings.mongoDBServerTransformationTable;
+            destination.transformationTable = textBoxTranformationTable.Text;
 
             transformation grupo01 = new transformation(destination);
 
@@ -170,6 +170,7 @@ namespace dataToMongoDB
                 textBoxMongoDatabase.Text = nameValueColl["mongoDBServerDatabase"];
                 textBoxMongoTable.Text = nameValueColl["mongoDBServerTable"];
                 textBoxMongoKey.Text = nameValueColl["mongoDBServerKey"];
+                textBoxTranformationTable.Text = nameValueColl["mongoDBServerTranformationTable"];
             }
             catch
             {
