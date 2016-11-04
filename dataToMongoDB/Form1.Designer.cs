@@ -61,10 +61,10 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
-            this.listaArchivos = new System.Windows.Forms.ListBox();
             this.button3 = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
+            this.checkListaArchivos = new System.Windows.Forms.CheckedListBox();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -383,7 +383,7 @@
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("MS Reference Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label11.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.label11.Location = new System.Drawing.Point(459, 572);
+            this.label11.Location = new System.Drawing.Point(459, 565);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(68, 20);
             this.label11.TabIndex = 24;
@@ -395,27 +395,19 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 25;
-            this.button2.Text = "transform";
+            this.button2.Text = "Transformar";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // listaArchivos
-            // 
-            this.listaArchivos.FormattingEnabled = true;
-            this.listaArchivos.Location = new System.Drawing.Point(13, 12);
-            this.listaArchivos.Name = "listaArchivos";
-            this.listaArchivos.Size = new System.Drawing.Size(423, 524);
-            this.listaArchivos.TabIndex = 26;
-            this.listaArchivos.SelectedIndexChanged += new System.EventHandler(this.button3_Click);
-            // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(13, 562);
+            this.button3.Location = new System.Drawing.Point(287, 562);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 27;
             this.button3.Text = "Cargar";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Visible = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // label13
@@ -424,7 +416,7 @@
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("MS Reference Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label13.ForeColor = System.Drawing.Color.Maroon;
-            this.label13.Location = new System.Drawing.Point(368, 572);
+            this.label13.Location = new System.Drawing.Point(368, 565);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(68, 20);
             this.label13.TabIndex = 28;
@@ -433,23 +425,46 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(105, 562);
+            this.button4.Location = new System.Drawing.Point(12, 562);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.Size = new System.Drawing.Size(116, 23);
             this.button4.TabIndex = 29;
-            this.button4.Text = "Grabar";
+            this.button4.Text = "Guardar cambios";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // label14
+            // 
+            this.label14.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("MS Reference Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.ForeColor = System.Drawing.Color.ForestGreen;
+            this.label14.Location = new System.Drawing.Point(134, 563);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(68, 20);
+            this.label14.TabIndex = 30;
+            this.label14.Text = "sdfsdfs";
+            this.label14.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // checkListaArchivos
+            // 
+            this.checkListaArchivos.FormattingEnabled = true;
+            this.checkListaArchivos.Location = new System.Drawing.Point(12, 18);
+            this.checkListaArchivos.Name = "checkListaArchivos";
+            this.checkListaArchivos.Size = new System.Drawing.Size(423, 529);
+            this.checkListaArchivos.TabIndex = 31;
+            this.checkListaArchivos.SelectedIndexChanged += new System.EventHandler(this.button3_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1167, 601);
+            this.Controls.Add(this.checkListaArchivos);
+            this.Controls.Add(this.label14);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.button3);
-            this.Controls.Add(this.listaArchivos);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.button1);
@@ -502,12 +517,13 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBoxSQLTable;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.ListBox listaArchivos;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox textBoxTranformationTable;
+        private System.Windows.Forms.CheckedListBox checkListaArchivos;
+
     }
 }
 

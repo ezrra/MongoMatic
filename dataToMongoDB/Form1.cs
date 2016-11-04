@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace dataToMongoDB
 {
@@ -18,27 +19,36 @@ namespace dataToMongoDB
         private appSettings appSettings { get { return new appSettings(); } }
         private connectionType _connectionType {get { return radioButtonSqlServer.Checked ? connectionType.sqlServer : connectionType.mySQL; } }
         NameValueCollection nameValueColl;
+        System.Xml.XmlDocument xDoc;
+        string fileName;
+        System.Xml.XmlNodeList xList;
 
         public Form1()
         {
             InitializeComponent();
             Initialize();
-            label11.Text = "";
             radioButtonSqlServer.Checked = true;
-
-            textBoxMongoConnection.Text = appSettings.mongoDBServerConnection;
+            /* textBoxMongoConnection.Text = appSettings.mongoDBServerConnection;
             textBoxMongoDatabase.Text = appSettings.mongoDBServerDatabase;
             textBoxMongoTable.Text = appSettings.mongoDBServerTable;
-            textBoxMongoKey.Text = appSettings.mongoDBServerKey;
+            textBoxMongoKey.Text = appSettings.mongoDBServerKey; */
+            label11.Text = "";
+            label13.Text = "";
+            label14.Text = "";
         }
 
         private void Initialize()
         {
             string[] fileEntries = Directory.GetFiles(appSettings.folderPath);
+            /* foreach (string fileName in fileEntries)
+                listaArchivos.Items.Add(fileName); */
+
             foreach (string fileName in fileEntries)
-                listaArchivos.Items.Add(fileName);
+                checkListaArchivos.Items.Add(fileName);
 
             nameValueColl = new NameValueCollection();
+
+            
         }
 
         private void groupBox1_Enter(object sender, EventArgs e)
@@ -55,6 +65,12 @@ namespace dataToMongoDB
         {
             label11.Text = "Procesando...";
             dataToMongoDBProcess process;
+
+            foreach (object itemChecked in checkListaArchivos.CheckedItems)
+            {
+
+                MessageBox.Show(itemChecked.ToString());
+            }
 
             
             if ( _connectionType  == connectionType.sqlServer)
@@ -78,12 +94,11 @@ namespace dataToMongoDB
             destination.key = textBoxMongoKey.Text;
             destination.interval = Convert.ToInt64(textBox4.Text);
             destination.dropTable = checkBox1.Checked;
+
             destination.transformationTable = textBoxTranformationTable.Text;
-
-
+            destination.transformationTable = nameValueColl["mongoDBServerTranformationTable"];
 
             label11.Text = "Tiempo de procesamiento: " + process.export(source, destination);
-
 
         }
 
@@ -97,7 +112,6 @@ namespace dataToMongoDB
                 textBoxSQLTable.Text = appSettings.sqlServerTable;
                 textBoxSQLKey.Text = appSettings.sqlServerKey;
                 textBoxSQLScript.Text = appSettings.sqlServerScript;
-
             }
             else
             {
@@ -124,11 +138,9 @@ namespace dataToMongoDB
             destination.interval = Convert.ToInt64(textBox4.Text);
             destination.dropTable = checkBox1.Checked;
             destination.transformationTable = textBoxTranformationTable.Text;
-
+            destination.transformationTable = nameValueColl["mongoDBServerTranformationTable"];
             transformation grupo01 = new transformation(destination);
-
             
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -138,51 +150,97 @@ namespace dataToMongoDB
 
         private void button3_Click(object sender, EventArgs e)
         {
-            label13.Text = "";
-            string fileName = listaArchivos.SelectedItem.ToString();
-            
-            System.Xml.XmlDocument xDoc = new System.Xml.XmlDocument();
-            NameValueCollection nameValueColl = new NameValueCollection();
-
-            ExeConfigurationFileMap map = new ExeConfigurationFileMap();
-            map.ExeConfigFilename = fileName;
-            try
+            if (checkListaArchivos.SelectedIndex != -1)
             {
-                Configuration config = ConfigurationManager.OpenMappedExeConfiguration(map, ConfigurationUserLevel.None);
-                string xml = config.GetSection("appSettings").SectionInformation.GetRawXml();
-                xDoc.LoadXml(xml);
+                fileName = checkListaArchivos.SelectedItem.ToString();
+                xDoc = new System.Xml.XmlDocument();
+                // NameValueCollection 
+                nameValueColl = new NameValueCollection();
+                // ExeConfigurationFileMap map = new ExeConfigurationFileMap();
+                // map.ExeConfigFilename = fileName;
 
-                System.Xml.XmlNode xList = xDoc.ChildNodes[0];
-                foreach (System.Xml.XmlNode xNodo in xList)
+                try
                 {
-                    nameValueColl.Add(xNodo.Attributes[0].Value, xNodo.Attributes[1].Value);
+                    // Configuration config = ConfigurationManager.OpenMappedExeConfiguration(map, ConfigurationUserLevel.None);
+                    // string xml = config.GetSection("appSettings").SectionInformation.GetRawXml();
+
+                    xDoc.Load(fileName);
+
+                    if (xDoc.SelectSingleNode("/configuration/appSettings/add") == null)
+                    {
+                        throw new Exception("Format not valid");
+                    }
+
+                    xList = xDoc.SelectNodes("/configuration/appSettings/add"); // xDoc.ChildNodes[0];
+
+
+                    foreach (System.Xml.XmlNode xNodo in xList)
+                    {
+                        nameValueColl.Add(xNodo.Attributes[0].Value, xNodo.Attributes[1].Value);
+                    }
+
+                    textBoxSQLConnection.Text = nameValueColl["sqlServerConnection"];
+                    textBoxSQLDatabase.Text = nameValueColl["sqlServerDatabase"];
+                    textBoxSQLTable.Text = nameValueColl["sqlServerTable"];
+                    textBoxSQLKey.Text = nameValueColl["sqlServerKey"];
+                    textBoxSQLScript.Text = nameValueColl["sqlServerScript"];
+
+                    textBoxMongoConnection.Text = nameValueColl["mongoDBServerConnection"];
+                    textBoxMongoDatabase.Text = nameValueColl["mongoDBServerDatabase"];
+                    textBoxMongoTable.Text = nameValueColl["mongoDBServerTable"];
+                    textBoxMongoKey.Text = nameValueColl["mongoDBServerKey"];
+                    textBoxTranformationTable.Text = nameValueColl["mongoDBServerTranformationTable"];
+
+                    label13.Text = "";
                 }
-
-
-                textBoxSQLConnection.Text = nameValueColl["sqlServerConnection"];
-                textBoxSQLDatabase.Text = nameValueColl["sqlServerDatabase"];
-                textBoxSQLTable.Text = nameValueColl["sqlServerTable"];
-                textBoxSQLKey.Text = nameValueColl["sqlServerKey"];
-                textBoxSQLScript.Text = nameValueColl["sqlServerScript"];
-
-
-                textBoxMongoConnection.Text = nameValueColl["mongoDBServerConnection"];
-                textBoxMongoDatabase.Text = nameValueColl["mongoDBServerDatabase"];
-                textBoxMongoTable.Text = nameValueColl["mongoDBServerTable"];
-                textBoxMongoKey.Text = nameValueColl["mongoDBServerKey"];
-                textBoxTranformationTable.Text = nameValueColl["mongoDBServerTranformationTable"];
-            }
-            catch
-            {
-                label13.Text = "El archivo no contiene un formato valido";
-
+                catch
+                {
+                    // Console.Write("Err:" + Xml);
+                    label13.Text = "El archivo no contiene un formato valido";
+                }
             }
 
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
+            if (checkListaArchivos.SelectedIndex != -1)
+            {
+                try
+                {
+                    XmlNode xNode;
+                    xNode = xList.Item(1);
+                    xNode.Attributes[1].Value = textBoxSQLConnection.Text;
+                    xNode = xList.Item(2);
+                    xNode.Attributes[1].Value = textBoxSQLDatabase.Text;
+                    xNode = xList.Item(3);
+                    xNode.Attributes[1].Value = textBoxSQLTable.Text;
+                    xNode = xList.Item(4);
+                    xNode.Attributes[1].Value = textBoxSQLKey.Text;
+                    xNode = xList.Item(5);
+                    xNode.Attributes[1].Value = textBoxSQLScript.Text;
+                    xNode = xList.Item(6);
+                    xNode.Attributes[1].Value = textBoxMongoConnection.Text;
+                    xNode = xList.Item(7);
+                    xNode.Attributes[1].Value = textBoxMongoDatabase.Text;
+                    xNode = xList.Item(8);
+                    xNode.Attributes[1].Value = textBoxMongoTable.Text;
+                    xNode = xList.Item(10);
+                    xNode.Attributes[1].Value = textBoxMongoKey.Text;
 
+                    xDoc.Save(fileName);
+
+                    label14.Text = "Se almaceno correctamente";
+                }
+                catch (Exception)
+                {
+                    label13.Text = "No se pudo almacenar correctamente";
+                }
+            } else
+            {
+                label13.Text = "Necesitas selecionar un archivo de la lista";
+            }
+            
         }
     }
 }
