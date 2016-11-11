@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.Common;
 using MongoDB.Driver;
 using MongoDB.Bson;
@@ -49,6 +45,7 @@ namespace dataToMongoDB
 
         protected IMongoCollection<BsonDocument> setupDestination(dataObject _destination)
         {
+
             destination = _destination;
 
             var mongoClient = new MongoClient(destination.connectionString);
@@ -91,11 +88,15 @@ namespace dataToMongoDB
                                 values.Add(sourceData.GetName(i), trans.filter(sourceData.GetName(i), sourceData.GetValue(i).ToString()));
                             else if (sourceData.GetName(i).Equals("venta") || sourceData.GetName(i).Equals("litros") || sourceData.GetName(i).Equals("precioPorLitro") )
                                 values.Add(sourceData.GetName(i), Convert.ToDouble(sourceData.GetValue(i)));
+                                //values.Add(sourceData.GetName(i),sourceData.GetValue(i));
+                            else if (sourceData.GetName(i).Equals("fecha"))
+                                 values.Add(sourceData.GetName(i), BsonUtils.ToLocalTime(Convert.ToDateTime(sourceData.GetValue(1))) );
                             else
                                 values.Add(sourceData.GetName(i), sourceData.GetValue(i));
 
                         }
 
+                        
                         lista.Add(new BsonDocument(values));
                         if (j % destination.interval == 0)
                         {
