@@ -10,7 +10,10 @@ namespace dataToMongoDB
             MySqlConnection connection = new MySqlConnection(source.connectionString);
             MySqlCommand command = new MySqlCommand();
             command.Connection = connection;
-            command.CommandText = string.Format("select  * from {0} where {1} between {2} and {3} ", source.table, source.key, lowBound, highBound);
+            if (source.script == String.Empty)
+                command.CommandText = string.Format("select  * from {0} where {1} between {2} and {3} ", source.table, source.key, lowBound, highBound);
+            else
+                command.CommandText = string.Format(source.script);
             connection.Open();
             sourceData = command.ExecuteReader();
 
@@ -37,7 +40,8 @@ namespace dataToMongoDB
         protected override void setupSource(dataObject _source)
         {
             source = _source;
-            setMInMaxValues();
+            if (source.script == String.Empty)
+                setMInMaxValues();
         }
     }
 }

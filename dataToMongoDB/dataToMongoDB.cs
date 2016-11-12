@@ -90,7 +90,7 @@ namespace dataToMongoDB
                                 values.Add(sourceData.GetName(i), Convert.ToDouble(sourceData.GetValue(i)));
                                 //values.Add(sourceData.GetName(i),sourceData.GetValue(i));
                             else if (sourceData.GetName(i).Equals("fecha"))
-                                 values.Add(sourceData.GetName(i), BsonUtils.ToLocalTime(Convert.ToDateTime(sourceData.GetValue(1))) );
+                                 values.Add(sourceData.GetName(i), BsonUtils.ToLocalTime(Convert.ToDateTime(sourceData.GetValue(i))) );
                             else
                                 values.Add(sourceData.GetName(i), sourceData.GetValue(i));
 
