@@ -6,14 +6,20 @@
 
 		$scope.loader = true;
 
-		var renderers = $.extend($.pivotUtilities.renderers, $.pivotUtilities.gchart_renderers, $.pivotUtilities.d3_renderers);
-
-		$http.get('/api/test')
+		$http
+			.get('/api/test')
 			.success(function (data) {
 
 				$scope.data = data;
 
-				pivotUI();
+				if (!$scope.data) {
+					
+					alert("No hay datos para mostrar")
+				
+				} else {
+
+					pivotUI();
+				}
 
 				$scope.loader = false;
 
@@ -24,18 +30,12 @@
 			$("#output").pivotUI(
 			    $scope.data,
 			    {
-			    	// renderers: renderers,
-			        rows: ["grupo01", "grupo03"],
-			        cols: ["grupo02"],
-			        // rendererName: "Table"
+			        rows: ["DatabaseSource"],
+			        cols: ["grupo01"],
 			    }, false, "es"
 			);
-
-			// $('table').addClass('table table-striped');
 		}
 
 	});
-
-	// angular.
 
 })();

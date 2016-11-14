@@ -1,0 +1,2 @@
+Quitar la libreria de Bootstrap
+Quitar angular y usar Javascript nativo

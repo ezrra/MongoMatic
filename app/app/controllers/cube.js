@@ -9,8 +9,8 @@ router.get('/test', function (req, res) {
 	// res.json({ test: 'test' });
 
 	var collection = db.get().collection('unDia');
-
-	collection.find({}, { "_id":0 }).sort({ fecha: 1 }).toArray(function (err, docs) {
+	// .sort({ fecha: 1 })
+	collection.find({}, { "_id":0 }).toArray(function (err, docs) {
 
 		res.json(docs);
 	})
