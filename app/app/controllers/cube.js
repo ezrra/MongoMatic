@@ -12,6 +12,13 @@ router.get('/test', function (req, res) {
 	// .sort({ fecha: 1 })
 	collection.find({}, { "_id":0 }).toArray(function (err, docs) {
 
+		if (err) {
+
+			console.log('ERROR!!!')
+
+			res.json([])
+		}
+
 		res.json(docs);
 	})
 });

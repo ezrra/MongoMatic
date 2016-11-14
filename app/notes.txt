@@ -1,2 +1,6 @@
 Quitar la libreria de Bootstrap
 Quitar angular y usar Javascript nativo
+
+process out of memory
+http://www.codingdefined.com/2015/10/how-to-solve-process-out-of-memory.html
+--max-old-space-size=2000

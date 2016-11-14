@@ -12,7 +12,7 @@
 
 				$scope.data = data;
 
-				if (!$scope.data) {
+				if (!$scope.data || $scope.data.length == 0) {
 					
 					alert("No hay datos para mostrar")
 				
