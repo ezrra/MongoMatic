@@ -1,3 +1,10 @@
+// Base de datos a utilizar
+
+['unDia', 'unMes', 'tresMeses', 'seisMeses'];
+
+db.unMes.updateMany({ grupo01: { $exists: false } }, { $set: { "grupo01": "N/A" } })
+db.unMes.updateMany({ grupo02: { $exists: false } }, { $set: { "grupo02": "N/A" } })
+db.unMes.updateMany({ grupo03: { $exists: false } }, { $set: { "grupo03": "N/A" } })
 db.unMes.updateMany({ grupo04: { $exists: false } }, { $set: { "grupo04": "N/A" } })
 db.unMes.updateMany({ grupo05: { $exists: false } }, { $set: { "grupo05": "N/A" } })
 db.unMes.updateMany({ grupo06: { $exists: false } }, { $set: { "grupo06": "N/A" } })
@@ -18,7 +25,27 @@ db.unMes.updateMany({ grupo07: "" }, { $set: { "grupo07": "N/A" } })
 db.unMes.updateMany({ grupo10: "" }, { $set: { "grupo10": "N/A" } })
 db.unMes.updateMany({ grupo11: "" }, { $set: { "grupo11": "N/A" } })
 
+// unDia
+db.newCubo2.aggregate([
+{
+    $match: { fecha: { $gte: ISODate("2016-01-01"), $lte: ISODate("2016-01-02") } }
+},
+{
+    $out: "unDia"
+}
+])
 
+// unMes
+db.newCubo2.aggregate([
+{
+    $match: { fecha: { $gte: ISODate("2016-01-01"), $lte: ISODate("2016-01-31") } }
+},
+{
+    $out: "unMes"
+}
+])
+
+//tresMeses
 db.newCubo2.aggregate([
 {
     $match: { fecha: { $gte: ISODate("2016-01-01"), $lte: ISODate("2016-03-31") } }
@@ -28,20 +55,13 @@ db.newCubo2.aggregate([
 }
 ])
 
+// seisMeses
 db.newCubo2.aggregate([
 {
     $match: { fecha: { $gte: ISODate("2016-01-01"), $lte: ISODate("2016-06-31") } }
 },
 {
-        $out: "seisMeses"
+    $out: "seisMeses"
 }
 ])
 
-db.newCubo2.aggregate([
-{
-    $match: { fecha: { $gte: ISODate("2016-01-01"), $lte: ISODate("2016-01-02") } }
-},
-{
-    $out: "unDia"
-}
-])
