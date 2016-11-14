@@ -1,18 +1,16 @@
 var express = require('express'),
-	router = express.Router();
+	router 	= express.Router(),
+	config	= require('../../config');
 
 var db = require('../db');
 
 router.get('/test', function (req, res) {
 
-	// res.json({ test: 'test' });
-	var collection = db.get().collection('seisMeses');
-	// .sort({ fecha: 1 })
+	var collection = db.get().collection(config.collection);
+
 	collection.find({}, { "_id":0 }).toArray(function (err, docs) {
 
 		if (err) {
-
-			console.log('ERROR!!!')
 
 			res.json([])
 		}

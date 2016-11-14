@@ -1,4 +1,5 @@
 module.exports = {
   "port": process.env.PORT || 3000,
-  "database": "mongodb://localhost:27017/test"
+  "connection": "mongodb://localhost:27017/newCubo3",
+  "collection": "unDia"
 };
