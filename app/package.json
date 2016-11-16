@@ -5,6 +5,7 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.15.1",
     "express": "~4.13.4",
-    "mongodb": "^2.2.9"
+    "mongodb": "^2.2.*",
+    "redis": "^2.6.3"
   }
 }

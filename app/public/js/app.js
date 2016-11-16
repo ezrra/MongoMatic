@@ -6,24 +6,39 @@
 
 		$scope.loader = true;
 
-		$http
-			.get('/api/test')
-			.success(function (data) {
+		var dates = {
+			startDate: '2016-01-01',
+			endDate: '2016-01-31'
+		};
 
-				$scope.data = data;
+		var req = {
+			method: 'GET',
+		 	url: '/api/test',
+		 	params: dates
+		}
 
-				if (!$scope.data || $scope.data.length == 0) {
-					
-					alert("No hay datos para mostrar")
+		$http(req).then(function (response) {
+
+			$scope.data = response.data;
+
+			console.log(response)
+
+			if ($scope.data.length == 0) {
 				
-				} else {
+				alert("No hay datos para mostrar")
+			
+			} else {
 
-					pivotUI();
-				}
+				pivotUI();
+			}
 
-				$scope.loader = false;
+			$scope.loader = false;
 
-			});
+		}, function (err) {
+
+			console.log(err);
+
+		});
 
 		function pivotUI () {
 
@@ -31,7 +46,7 @@
 			    $scope.data,
 			    {
 			        rows: ["DatabaseSource"],
-			        cols: ["grupo01"],
+			        cols: [""],
 			    }, false, "es"
 			);
 		}

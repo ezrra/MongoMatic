@@ -1,11 +1,11 @@
 var	express 	= require('express'),
 	app 		= express(),
 	bodyParser 	= require('body-parser'),
-	morgan 		= require('morgan'),
 	config		= require('./config'),
-	path 		= require('path'),
-    mongoose    = require('mongoose'),
-    mysql       = require('mysql');
+	path 		= require('path');
+
+/* var redisClient = require('redis').createClient;
+var redis = redisClient(6379, 'localhost'); */
 
 var db = require('./app/db');
 

@@ -7,5 +7,5 @@ $ npm install
 
 ### Run
 ```
-$ node --max-old-space-size=2000 server.js
+$ node --max-old-space-size=20000 server.js
 ```
