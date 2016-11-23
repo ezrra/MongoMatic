@@ -4,25 +4,66 @@
 
 	app.controller('MainCtrl', function ($scope, $http, $q) {
 
+		/**
+		 * Setting locale of moment.js 
+		 * @param set Spanish
+		 */
 		moment.locale('es');
-
-		$scope.loader = false;
 
 		$scope.currentData = [];
 
-		$scope.data = [];
+		/**
+		 * Directive manipulate DOM
+		 * 
+		 */
+		$scope.loader = false;
+		$scope.dateRangePickerMsg = true;
+		$scope.dateRangePickerInput = false;
 
-		$scope.daterangepickerMsg = true;
+		/**
+		 * Construct directive daterangepicker
+		 * @param startDate
+		 * @prams endDate
+		 */
+		$scope.date = { startDate: moment().subtract(1, "days"), endDate: moment() };
 
-		$scope.daterangepicker = true;
-
+		/**
+		 * Days array is a global variable
+		 */
 		var days = [];
-		/* {
-			date: "2016-11-22",
-			text: "Ayer",
-			data: [{}]
-		} */
 
+		var dates = [
+			{ text: "Ayer", endDate: moment().subtract(1, 'days').format("2015-MM-DD 23:59:59"), startDate: moment().subtract(1, 'days').format("2015-MM-DD 00:00:00"), data: [] },
+			{ text: "Hace 7 dias", endDate: moment().subtract(1, 'days').format("2015-MM-DD 23:59:59"), startDate: moment().subtract(7, 'days').format("2015-MM-DD 00:00:00"), data: [] },
+			{ text: "Hace 14 dias", endDate: moment().subtract(1, 'days').format("2015-MM-DD 23:59:59"), startDate: moment().subtract(13, 'days').format("2015-MM-DD 00:00:00"), data: [] },
+			{ text: "Hace 30 dias", endDate: moment().subtract(1, 'days').format("2015-MM-DD 23:59:59"), startDate: moment().subtract(29, 'days').format("2015-MM-DD 00:00:00"), data: [] }
+		];
+
+		/**
+		 * First date of the dates range
+		 */
+		var startDate 		= moment(dates[dates.length - 1].startDate);
+
+		/**
+		 * Last date of the dates range
+		 */
+		var endDate 		= moment(dates[0].endDate);
+
+		/**
+		 * Array of days using startDate & endDate variables
+		 */
+		var daysArray 		= daysToArray(startDate, endDate);
+
+		/**
+		 * Length of the days array
+		 */
+		var daysArrayLength = daysArray.length;
+
+		/**
+		 * Settings options of moment.js
+		 * @param locale texts
+		 * @param ranges
+		 */
 		$scope.opts = {
 	        locale: {
 	            applyClass: 'btn-green',
@@ -39,39 +80,36 @@
 	        ranges: {},
 	    };
 
-		
+	    /**
+	     * Return a array of dates between start date and end date
+	     * @param startDate
+	     * @param endDate 
+	     */
+		function daysToArray (startDate, endDate) {
 
-		function daysToArray (startDay, endDate) {
-
-			var i = 0;
-			var days = [];
-			var date = moment(startDay).format("YYYY-MM-DD");
-			var endDate = moment(endDate).format("YYYY-MM-DD");
-			var startDay = moment(startDay).format("YYYY-MM-DD");
+			var days 		= [],
+				startDate 	= moment(startDate).subtract(1, 'days').format("YYYY-MM-DD"),
+				endDate 	= moment(endDate).format("YYYY-MM-DD");
 			
-			while (date < endDate) {
-				date = moment(startDay).add(i, 'day').format("YYYY-MM-DD");
-				days.push(moment(date).format("YYYY-MM-DD"));
-				i++;
+			while (startDate < endDate) {
+				startDate = moment(startDate).add(1, 'day').format("YYYY-MM-DD");
+				days.push(moment(startDate).format("YYYY-MM-DD"));
 			}
 
 			return days;
 		}
 
-		var dates = [
-			{ text: "Ayer", endDate: moment().subtract(1, 'days').format("2015-MM-DD 23:59:59"), startDate: moment().subtract(1, 'days').format("2015-MM-DD 00:00:00") },
-			{ text: "Hace 7 dias", endDate: moment().subtract(1, 'days').format("2015-MM-DD 23:59:59"), startDate: moment().subtract(7, 'days').format("2015-MM-DD 00:00:00") },
-			/*
-			{ text: "Hace 14 dias", endDate: moment(), startDate: moment().subtract(13, 'days') },
-			{ text: "Hace 30 dias", endDate: moment(), startDate: moment().subtract(29, 'days') }
-			*/
-		];
-
+		/**
+		 * HTTP request to API
+		 * @param startDate
+		 * @param endDate
+		 * @param callback
+		 */
 		function request (startDate, endDate, callback) {
 
 			var dates = { startDate: startDate, endDate: endDate };
 
-			var req = { method: 'GET', url: '/api/test', params: dates };
+			var req = { method: 'GET', url: '/api/range', params: dates };
 
 			$http(req).then(function (response) {
 
@@ -84,30 +122,6 @@
 			});
 		};
 
-		function allDays (date, callback) {
-
-			var dates = { startDate: date, endDate: date };
-
-			var req = { method: 'GET', url: '/api/test', params: dates };
-
-			$http(req).then(function (response) {
-
-				callback(null, response)
-
-			}, function (err) {
-
-				callback(err, [])
-
-			});
-
-		}
-
-		var startDate 		= moment(dates[dates.length - 1].startDate);
-		var endDate 		= moment(dates[0].endDate);
-		var daysArray 		= daysToArray(startDate, endDate);
-
-		var daysArrayLength = daysArray.length - 1;
-
 		angular.forEach(daysArray, function (date, index) {
 
 			request(date, date, function (err, response) {
@@ -117,215 +131,58 @@
 					data: response.data,
 				});
 
-				if (index == daysArrayLength) {
-					
-					checkDates()
+				if (index == daysArrayLength - 1) {
 
+					setDates();
 				}
 
 			})
 
 		})
 
-		function checkDates () {
+		function setDates () {
 
-
-			angular.forEach(days, function (day, key) {
-
-				// console.log(day)
-
-				var amount = [];
-
-				angular.forEach(dates, function (date, index) {
-
-					if (moment(day.date).isBetween(date.startDate, date.endDate, null, '[]')) {
-						// console.log(day.date)
-						// console.log(date)
-
-						amount.push(day.data)
-
-						// dates[index].data.push(day.data)
-					}
-
-				})
-
-				dates[key].data = amount;
-
-				console.log('----------')
-			})
-
-			console.log(dates)
-
-			// console.log(dates)
-
-			/*angular.forEach(dates, function (date, index) {
-
-				// console.log(date)
-
-				// $scope.data.push(date);
-
-				console.log(date)
+			angular.forEach(dates, function (date, index) {
 
 				angular.forEach(days, function (day, key) {
 
-					// console.log(day)
-					
+					if (moment(day.date).isBetween(date.startDate, date.endDate, null, '[]')) {
 
-					if (!moment(day.date).isBetween(date.startDate, date.endDate, null, '[]')) {
-						
+						angular.forEach(day.data, function (value) {
+
+							dates[index].data.push(value)
+						})
 					}
-					
-			// 		var startDate 	= moment(value1.startDate).format("2015-MM-DD"),
-			// 			endDate 	= moment(value1.endDate).format("2015-MM-DD"),
-			// 			date 		= moment(value.date).format("YYYY-MM-DD");
-
-			// 			// console.log(value)
-			// 		// console.log(startDate + " ** " + endDate + " --- " + date)
-
-			// 		// console.log(moment(date).isBetween(startDate, endDate, null, '[]'))
-
-			// 		if (!moment(date).isBetween(startDate, endDate, null, '[]')) {
-
-			// 			// console.log(dates)
-			// 		}
 
 				})
 
-			})*/
-			
-		}
-
-		angular.forEach(dates, function (value, key) {
-			
-			/*var startDate 	= moment(value.startDate).format("2015-MM-DD"),
-				endDate 	= moment(value.endDate).format("2015-MM-DD");*/
-
-			// console.log(value)
-
-			// var _days = daysArray(startDate, endDate);
-
-			// console.log(_days)
-
-			angular.forEach(days, function (date, index) {
-
-				// console.log(date)
-
-				// var index = _.findIndex(days, { 'date': date });
-
-				// console.log(index)
-
-				if (index > -1) {
-
-					/*$scope.data.push({
-						'text': value.text,
-						'data': days[index].data,
-						'startDate': startDate,
-						'endDate': endDate
-					});*/
-
-				} else {
-
-					/*request(date, date)
-						.then(function (data) {
-
-							days.push({
-								date: date,
-								data: data,
-							});
-
-							console.log(data)
-
-							request()
-						})*/
-
-					
-
-					// request(val, val, function (err, response) {
-
-						/*days.push({
-							date: val,
-							data: response.data,
-						});
-
-						$scope.data.push({
-							'text': value.text,
-							'data': response.data,
-							'startDate': startDate,
-							'endDate': endDate
-						}); */
-
-						/* if (key == 0) {
-
-							$scope.currentData = {
-								'text': value.text,
-								'data': response.data,
-								'startDate': startDate,
-								'endDate': endDate
-							}
-
-							pivotUI();
-						}; */
-
-						/* $scope.data.push({
-							'text': value.text,
-							'data': response.data,
-							'startDate': startDate,
-							'endDate': endDate
-						}); */
-
-						/*
-
-						if (dates.length == $scope.data.length) {
-							$scope.daterangepicker = true;
-							$scope.daterangepickerMsg = false;
-						} */
-
-					// })
-				}
-				
-			})
-	
-			// $scope.opts.ranges[value.text] = [startDate, endDate];
-
-			// ================================
-
-			/* request(startDate, endDate, function (err, response) {
-
-				if (key == 0) {
+				if (index == 0) {
 
 					$scope.currentData = {
-						'text': value.text,
-						'data': response.data,
-						'startDate': startDate,
-						'endDate': endDate
+						'text': date.text,
+						'data': date.data,
+						'startDate': date.startDate,
+						'endDate': date.endDate
 					}
 
 					pivotUI();
+
+					$scope.date = {
+				        startDate: moment(date.startDate),
+				        endDate: moment(date.endDate)
+				    };
 				};
 
-				$scope.opts.ranges[value.text] = [startDate, endDate];
+				$scope.opts.ranges[date.text] = [date.startDate, date.endDate];
+			})
 
-				$scope.data.push({
-					'text': value.text,
-					'data': response.data,
-					'startDate': startDate,
-					'endDate': endDate
-				});
-
-				if (dates.length == $scope.data.length) {
-					$scope.daterangepicker = true;
-					$scope.daterangepickerMsg = false;
-				}
-
-			}) */
-
-		});
-
-		$scope.$watch('data', function (newData, oldData) {
-			
-		}, true);
+			$scope.dateRangePickerMsg = false;
+			$scope.dateRangePickerInput = true;
+			watchDate();
+		}
 
 		function pivotUI () {
+
 			$("#output").pivotUI(
 			    $scope.currentData.data,
 			    {
@@ -335,42 +192,33 @@
 			);
 		}
 
-		$scope.date = {
-	        startDate: moment().subtract(1, "days"),
-	        endDate: moment()
-	    };
+	    function watchDate () {
 
-	    
+		    $scope.$watch('date', function(date) {
 
-	    $scope.$watch('date', function(date) {
+		        var startDate 	= moment(date.startDate).format("YYYY-MM-DD 00:00:00");
+		        var endDate 	= moment(date.endDate).format("YYYY-MM-DD 23:59:59");
 
-	    	// console.log($scope.data)
+		        var index 		= _.findKey(dates, { 'startDate': startDate, 'endDate': endDate });
 
-	        var startDate 	= moment(date.startDate).format("YYYY-MM-DD");
-	        var endDate 	= moment(date.endDate).format("YYYY-MM-DD");
-	        var index 		= _.findKey($scope.data, { 'startDate': startDate, 'endDate': endDate });
+		        $scope.currentData = [];
 
-	        $scope.currentData = [];
+		        if (dates.length > 0 && dates[index]) {
 
-	        if ($scope.data.length > 0 && $scope.data[index]) {
+		        	$scope.currentData = {
+						'text': dates[index].text,
+						'data': dates[index].data,
+						'startDate': dates[index].startDate,
+						'endDate': dates[index].endDate
+					}
 
-	        	$scope.currentData = {
-					'text': $scope.data[index].text,
-					'data': $scope.data[index].data,
-					'startDate': $scope.data[index].startDate,
-					'endDate': $scope.data[index].endDate
-				}
+		        	$scope.currentData = dates[index];
 
-				// console.log($scope.data[index])
+		        	pivotUI();
+		        }
 
-	        	// $scope.currentData = $scope.data[index];
-
-	        	pivotUI();
-	        }
-
-	        // pivotUI();
-
-	    }, false);
+		    }, false);
+	    }
 
 
 	});

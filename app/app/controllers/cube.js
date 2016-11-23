@@ -4,7 +4,7 @@ var express = require('express'),
 
 var db = require('../db');
 
-router.get('/test', function (req, res) {
+router.get('/range', function (req, res) {
 
 	var collection = db.get().collection(config.collection);
 

@@ -38,8 +38,8 @@
       <div ng-show="loader"><h3>Cargando ...</h3></div>
 
       <div class="form-group">
-        <label class="control-label">Calendario</label> <small ng-show="daterangepickerMsg">Cargando fechas ...</small>
-        <input date-range-picker="" class="form-control date-picker ng-pristine ng-valid ng-isolate-scope ng-touched" type="text" ng-model="date" ng-show="daterangepicker" options="opts">
+        <label class="control-label">Calendario</label> <small ng-show="dateRangePickerMsg">Cargando fechas ...</small>
+        <input date-range-picker="" class="form-control date-picker ng-pristine ng-valid ng-isolate-scope ng-touched" type="text" ng-model="date" ng-show="dateRangePickerInput" options="opts">
       </div>
       <hr>
       <h4>Datos de <span ng-if="currentData.text">"{{ currentData.text }}"</span></h4>
