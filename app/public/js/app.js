@@ -81,7 +81,7 @@
 	    };
 
 	    /**
-	     * Return a array of dates between start date and end date
+	     * Return an array of dates between start date and end date
 	     * @param startDate
 	     * @param endDate 
 	     */

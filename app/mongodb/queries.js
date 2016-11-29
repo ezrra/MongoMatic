@@ -129,3 +129,26 @@ db.newCubo2.aggregate([
     $out: "unAyo"
 }
 ])
+
+/**
+ * Collection Groups
+ */
+
+db.groups.insertMany([
+    { "grupo01" : "Estacion" },
+    { "grupo02" : "Producto" },
+    { "grupo03" : "Zona (Ciudad)" },
+    { "grupo04" : "Divisa" },
+    { "grupo05" : "Tipo Pago" },
+    { "grupo06" : "Isla" },
+    { "grupo07" : "Familia" },
+    { "grupo08" : "Distrito (Estado)" },
+    { "grupo09" : "Bomba (Dispensario)" },
+    { "grupo10" : "Manguera" },
+    { "grupo11" : "Turno" },
+    { "DatabaseSource": "Base de datos"},
+    { "litros": "Litros" },
+    { "fecha": "Fecha" },
+    { "venta": "Venta" },
+    { "precioPorLitro": "Precio por litro" }
+])
